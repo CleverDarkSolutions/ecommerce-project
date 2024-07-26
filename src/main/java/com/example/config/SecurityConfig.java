@@ -33,7 +33,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
-                    auth.anyRequest().authenticated();
+                    // Allow access to payment endpoints without authentication
+                    auth.requestMatchers("/api/payments/**").permitAll()
+                            .anyRequest().authenticated();
                 })
                 .oauth2Login(oath2 -> {
                     oath2.loginPage("/login").permitAll();
